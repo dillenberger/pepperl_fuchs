@@ -25,7 +25,8 @@ The ROS package consists of the driver library and a node named `r2000_node`, wh
 
 ### Quick Start
 
-Set the IP-Address of the scanner in `launch/gui_example.launch` and run the following command:
+Copy the driver in your ROS workspace and compile it.
+Set the IP-Address of the scanner in `pepperl_fuchs_r2000/launch/gui_example.launch` and run the following command:
 
     roslaunch pepperl_fuchs_r2000 gui_example.launch
 
