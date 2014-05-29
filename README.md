@@ -76,3 +76,13 @@ To build a static library remove the `SHARED` in the `add_library` command in th
       driver.stopCapturing();
       driver.disconnect();
     }
+
+More documentation
+-------------------------
+The driver is commented in doxygen style. 
+You can create a latex and html documentation in the `pepperl_fuchs_r2000/doxygen` directory 
+by entering the following command in the `pepperl_fuchs_r2000` directory:
+
+    $ doxygen doxygen.conf
+    
+
