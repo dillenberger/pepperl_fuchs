@@ -10,7 +10,7 @@ The driver comes as a library, which contains the actual driver, and has additio
 
 Usage with ROS
 ---------------------------
-The ROS package consists of the driver library and a node named `r2000_node`, which is linked to the library. This is the actual driver node.
+The ROS package `pepperl_fuchs_r2000` consists of the driver library and a node named `r2000_node`, which is linked to the library. This is the actual driver node. The `dummy_slam_broadcaster` is only needed if you want to display the sensors data using the QuickStart method mentioned below.
 
 ### Published Topics
 
