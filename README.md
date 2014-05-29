@@ -1,7 +1,7 @@
 Pepperl+Fuchs R2000 Driver
 ===============================
 
-This is the Doxygen documentation of a driver for the Pepperl+Fuchs OMD10M-R2000-B23 laser range finder.
+This is the documentation of a driver for the Pepperl+Fuchs OMD10M-R2000-B23 laser range finder.
 
 The driver is based upon the widespread boost asio library (<http://www.boost.org>)
 
