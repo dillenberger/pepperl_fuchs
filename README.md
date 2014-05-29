@@ -46,7 +46,7 @@ Replace `CMakeLists.txt` with it to compile the driver without ROS:
 This builds a SHARED library which can be used in your program. 
 To build a static library remove the `SHARED` in the `add_library` command in the `CMakeLists.txt`.
 
-The basic usage of the driver library code (C++11 style) is as follows:
+### The basic usage of the driver library code (C++11 style) is as follows:
 
     #include <pepperl_fuchs_r2000/r2000_driver.h>
 
