@@ -38,6 +38,7 @@ There exists a file `CMakeLists.txt.NO_ROS_LIB_ONLY` in the `pepperl_fuchs_r2000
 Replace `CMakeLists.txt` with it to compile the driver without ROS:
 
     $ cd pepperl_fuchs_r2000
+    $ mv CMakeLists.txt.NO_ROS_LIB_ONLY CMakeLists.txt
     $ mkdir build
     $ cd build
     $ cmake ..
