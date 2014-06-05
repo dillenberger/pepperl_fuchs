@@ -2,7 +2,7 @@
 <package>
   <name>pepperl_fuchs_r2000</name>
   <version>0.1.0</version>
-  <description>The pepperl+fuchs r2000 laser range finder driver package</description>
+  <description>The Pepperl+Fuchs R2000 laser range finder driver package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/pepperl_fuchs_r2000</url> -->
+  <url type="website">http://wiki.ros.org/pepperl_fuchs_r2000</url> 
 
 
   <!-- Author tags are optional, mutiple are allowed, one per tag -->
