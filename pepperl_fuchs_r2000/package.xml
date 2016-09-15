@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>pepperl_fuchs_r2000</name>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
   <description>The Pepperl+Fuchs R2000 laser range finder driver package</description>
   <maintainer email="denis.dillenberger@gmail.com">Denis Dillenberger</maintainer>
   <author email="denis.dillenberger@gmail.com">Denis Dillenberger</author> 
