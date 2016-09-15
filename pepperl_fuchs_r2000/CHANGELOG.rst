@@ -2,7 +2,7 @@
 Changelog for package pepperl_fuchs_r2000
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.1.2 (2016-09-15)
+Forthcoming
 ------------------
 * Initial release
 * Contributors: Denis Dillenberger, Kevin Hallenbeck
