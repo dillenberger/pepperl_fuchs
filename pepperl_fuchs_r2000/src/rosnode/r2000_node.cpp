@@ -1,5 +1,5 @@
-// Copyright (c) 2014, Pepperl+Fuchs GmbH, Mannheim
-// Copyright (c) 2014, Denis Dillenberger
+// Copyright (c) 2014-2017, Pepperl+Fuchs GmbH, Mannheim
+// Copyright (c) 2014-2017, Denis Dillenberger
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
@@ -43,6 +43,8 @@ R2000Node::R2000Node():nh_("~")
     nh_.param("scanner_ip",scanner_ip_,std::string(""));
     nh_.param("scan_frequency",scan_frequency_,35);
     nh_.param("samples_per_scan",samples_per_scan_,3600);
+    nh_.param("start_angle",start_angle_,-1800000);
+    nh_.param("max_num_points_scan",max_num_points_scan_,0);
 
     if( scanner_ip_ == "" )
     {
@@ -92,7 +94,7 @@ bool R2000Node::connect()
     // Start capturing scanner data
     //-------------------------------------------------------------------------
     std::cout << "Starting capturing: ";
-    if( driver_->startCapturingTCP() )
+    if( driver_->startCapturingTCP(start_angle_,max_num_points_scan_) )
         std::cout << "OK" << std::endl;
     else
     {

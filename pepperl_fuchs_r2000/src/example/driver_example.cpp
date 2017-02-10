@@ -36,7 +36,7 @@
 int main(int argc, char **argv)
 {
     std::cout << "Hello world!" << std::endl;
-    std::string scanner_ip("192.168.1.71");
+    std::string scanner_ip("192.168.16.10");
     pepperl_fuchs::R2000Driver driver;
 
     for( int i=0; i<2; i++ )
@@ -64,7 +64,7 @@ int main(int argc, char **argv)
         // Start capturing scanner data
         //-------------------------------------------------------------------------
         std::cout << "Starting capturing: ";
-        if (driver.startCapturingUDP())
+        if (driver.startCapturingUDP(-1800000, 0))
             std::cout << "OK" << std::endl;
         else
         {
@@ -81,8 +81,9 @@ int main(int argc, char **argv)
             {
                 auto scandata = driver.getScan();
                 scans_captured++;
+                std::cout << "\tScan " << i << ": " << scandata.distance_data.size() << " points" << std::endl;
             }
-            std::cout << "Received " << scans_captured << " from scanner" << std::endl;
+            std::cout << "Received " << scans_captured << " scans from scanner" << std::endl;
         }
 
         std::cout << "Trying to stop capture" << std::endl;

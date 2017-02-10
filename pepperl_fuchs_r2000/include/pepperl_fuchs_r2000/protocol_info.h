@@ -60,6 +60,10 @@ struct HandleInfo
     //! Start angle of scan in 1/10000°, defaults to -1800000
     int start_angle;
 
+    //! Limits the maximum number of scan points per revolution in the output.
+    //! Allows the selection of  a certain sector for output in combination with the start_angle parameter.
+    unsigned int max_num_points_scan;
+
     //! If watchdog is enabled, it has to be fed otherwise scanner closes the connection after timeout
     bool watchdog_enabled;
 
