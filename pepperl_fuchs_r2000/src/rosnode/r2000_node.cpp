@@ -45,6 +45,8 @@ R2000Node::R2000Node():nh_("~")
     nh_.param("samples_per_scan",samples_per_scan_,3600);
     nh_.param("start_angle",start_angle_,-1800000);
     nh_.param("max_num_points_scan",max_num_points_scan_,0);
+    nh_.param("hmi_application_bitmap",hmi_application_bitmap_,std::string(""));
+    nh_.param("hmi_display_mode",hmi_display_mode_,std::string(""));
 
     if( scanner_ip_ == "" )
     {
@@ -84,7 +86,27 @@ bool R2000Node::connect()
     //-------------------------------------------------------------------------
     driver_->setScanFrequency(scan_frequency_);
     driver_->setSamplesPerScan(samples_per_scan_);
+
     auto params = driver_->getParameters();
+    if( hmi_application_bitmap_ != "" )
+    {
+        driver_->setParameter("hmi_application_bitmap", hmi_application_bitmap_);
+        if( driver_->getParametersCached().at("hmi_display_mode") != "application_bitmap" )
+        {
+            driver_->setParameter("hmi_display_mode","application_bitmap");
+        }
+        params = driver_->getParameters();
+    }
+    if( hmi_display_mode_ != "" )
+    {
+        if( driver_->getParametersCached().at("hmi_display_mode") != hmi_display_mode_ )
+        {
+            driver_->setParameter("hmi_display_mode",hmi_display_mode_);
+            params = driver_->getParameters();
+        }
+    }
+
+
     std::cout << "Current scanner settings:" << std::endl;
     std::cout << "============================================================" << std::endl;
     for( const auto& p : params )
@@ -117,17 +139,17 @@ void R2000Node::getScanData(const ros::TimerEvent &e)
         }
     }
     auto scandata = driver_->getFullScan();
-    if( scandata.amplitude_data.empty() || scandata.distance_data.empty() )
+    if( scandata.amplitude_data.empty() || scandata.distance_data.empty() || scandata.headers.empty() )
         return;
 
     sensor_msgs::LaserScan scanmsg;
     scanmsg.header.frame_id = frame_id_;
     scanmsg.header.stamp = ros::Time::now();
 
-    scanmsg.angle_min = -M_PI;
-    scanmsg.angle_max = +M_PI;
-    scanmsg.angle_increment = 2*M_PI/float(scandata.distance_data.size());
-    scanmsg.time_increment = 1/35.0f/float(scandata.distance_data.size());
+    scanmsg.angle_min = double(scandata.headers[0].first_angle)/10000.0/180.0*M_PI;
+    scanmsg.angle_max = scanmsg.angle_min + double(scandata.distance_data.size())/double(samples_per_scan_)*2*M_PI;
+    scanmsg.angle_increment = double(scandata.distance_data.size())/double(samples_per_scan_)*2*M_PI/float(scandata.distance_data.size());
+    scanmsg.time_increment = 1/std::atof(driver_->getParametersCached().at("scan_frequency").c_str())/float(scandata.distance_data.size());
 
     scanmsg.scan_time = 1/std::atof(driver_->getParametersCached().at("scan_frequency").c_str());
     scanmsg.range_min = std::atof(driver_->getParametersCached().at("radial_range_min").c_str());

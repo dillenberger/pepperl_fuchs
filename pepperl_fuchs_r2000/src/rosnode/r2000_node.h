@@ -86,6 +86,11 @@ private:
     //! Allows the selection of  a certain sector for output in combination with the start_angle parameter.
     int max_num_points_scan_;
 
+    //! HMI application bitmap
+    std::string hmi_application_bitmap_;
+
+    //! HMI display mode
+    std::string hmi_display_mode_;
 
     //! Pointer to driver
     R2000Driver* driver_;

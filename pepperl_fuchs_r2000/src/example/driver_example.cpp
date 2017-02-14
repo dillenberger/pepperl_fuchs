@@ -1,5 +1,5 @@
-// Copyright (c) 2014, Pepperl+Fuchs GmbH, Mannheim
-// Copyright (c) 2014, Denis Dillenberger
+// Copyright (c) 2014-2017, Pepperl+Fuchs GmbH, Mannheim
+// Copyright (c) 2014-2017, Denis Dillenberger
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     std::string scanner_ip("192.168.16.10");
     pepperl_fuchs::R2000Driver driver;
 
-    for( int i=0; i<2; i++ )
+    for( int i=0; i<1; i++ )
     {
         std::cout << "Connecting to scanner at " << scanner_ip << " ... ";
         if (driver.connect(scanner_ip, 80))
@@ -51,8 +51,14 @@ int main(int argc, char **argv)
             return 1;
         }
 
-        driver.setScanFrequency(35);
-        driver.setSamplesPerScan(3600);
+        driver.setScanFrequency(40);
+        driver.setSamplesPerScan(1440);
+
+        //! Display a custom bitmap on the HMI display of the scanner
+        //std::string bitmap = "<fill with some special base64url content>";
+        //driver.setParameter("hmi_application_bitmap", bitmap);
+        //driver.setParameter("hmi_display_mode","application_bitmap");
+
         auto params = driver.getParameters();
         std::cout << "Current scanner settings:" << std::endl;
         std::cout << "============================================================" << std::endl;
