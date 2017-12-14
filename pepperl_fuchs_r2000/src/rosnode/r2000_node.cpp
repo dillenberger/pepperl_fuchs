@@ -47,7 +47,7 @@ R2000Node::R2000Node():nh_("~")
     nh_.param("max_num_points_scan",max_num_points_scan_,0);
     nh_.param("hmi_application_bitmap",hmi_application_bitmap_,std::string(""));
     nh_.param("hmi_display_mode",hmi_display_mode_,std::string(""));
-    nh_.param("latency_offset",latency_offset_,0);
+    nh_.param("latency_offset",latency_offset_,0.0);
 
     if( scanner_ip_ == "" )
     {
