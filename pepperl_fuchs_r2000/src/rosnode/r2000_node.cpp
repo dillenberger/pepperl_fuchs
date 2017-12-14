@@ -1,5 +1,5 @@
-// Copyright (c) 2014, Pepperl+Fuchs GmbH, Mannheim
-// Copyright (c) 2014, Denis Dillenberger
+// Copyright (c) 2014-2017, Pepperl+Fuchs GmbH, Mannheim
+// Copyright (c) 2014-2017, Denis Dillenberger
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
@@ -43,6 +43,11 @@ R2000Node::R2000Node():nh_("~")
     nh_.param("scanner_ip",scanner_ip_,std::string(""));
     nh_.param("scan_frequency",scan_frequency_,35);
     nh_.param("samples_per_scan",samples_per_scan_,3600);
+    nh_.param("start_angle",start_angle_,-1800000);
+    nh_.param("max_num_points_scan",max_num_points_scan_,0);
+    nh_.param("hmi_application_bitmap",hmi_application_bitmap_,std::string(""));
+    nh_.param("hmi_display_mode",hmi_display_mode_,std::string(""));
+    nh_.param("latency_offset",latency_offset_,0.0);
 
     if( scanner_ip_ == "" )
     {
@@ -82,7 +87,27 @@ bool R2000Node::connect()
     //-------------------------------------------------------------------------
     driver_->setScanFrequency(scan_frequency_);
     driver_->setSamplesPerScan(samples_per_scan_);
+
     auto params = driver_->getParameters();
+    if( hmi_application_bitmap_ != "" )
+    {
+        driver_->setParameter("hmi_application_bitmap", hmi_application_bitmap_);
+        if( driver_->getParametersCached().at("hmi_display_mode") != "application_bitmap" )
+        {
+            driver_->setParameter("hmi_display_mode","application_bitmap");
+        }
+        params = driver_->getParameters();
+    }
+    if( hmi_display_mode_ != "" )
+    {
+        if( driver_->getParametersCached().at("hmi_display_mode") != hmi_display_mode_ )
+        {
+            driver_->setParameter("hmi_display_mode",hmi_display_mode_);
+            params = driver_->getParameters();
+        }
+    }
+
+
     std::cout << "Current scanner settings:" << std::endl;
     std::cout << "============================================================" << std::endl;
     for( const auto& p : params )
@@ -92,7 +117,7 @@ bool R2000Node::connect()
     // Start capturing scanner data
     //-------------------------------------------------------------------------
     std::cout << "Starting capturing: ";
-    if( driver_->startCapturingTCP() )
+    if( driver_->startCapturingTCP(start_angle_,max_num_points_scan_) )
         std::cout << "OK" << std::endl;
     else
     {
@@ -115,17 +140,17 @@ void R2000Node::getScanData(const ros::TimerEvent &e)
         }
     }
     auto scandata = driver_->getFullScan();
-    if( scandata.amplitude_data.empty() || scandata.distance_data.empty() )
+    if( scandata.amplitude_data.empty() || scandata.distance_data.empty() || scandata.headers.empty() )
         return;
 
     sensor_msgs::LaserScan scanmsg;
     scanmsg.header.frame_id = frame_id_;
-    scanmsg.header.stamp = ros::Time::now();
+    scanmsg.header.stamp = ros::Time::now()+ ros::Duration(latency_offset_);
 
-    scanmsg.angle_min = -M_PI;
-    scanmsg.angle_max = +M_PI;
-    scanmsg.angle_increment = 2*M_PI/float(scandata.distance_data.size());
-    scanmsg.time_increment = 1/35.0f/float(scandata.distance_data.size());
+    scanmsg.angle_min = double(scandata.headers[0].first_angle)/10000.0/180.0*M_PI;
+    scanmsg.angle_max = scanmsg.angle_min + double(scandata.distance_data.size())/double(samples_per_scan_)*2*M_PI;
+    scanmsg.angle_increment = double(scandata.distance_data.size())/double(samples_per_scan_)*2*M_PI/float(scandata.distance_data.size());
+    scanmsg.time_increment = 1/std::atof(driver_->getParametersCached().at("scan_frequency").c_str())/float(scandata.distance_data.size());
 
     scanmsg.scan_time = 1/std::atof(driver_->getParametersCached().at("scan_frequency").c_str());
     scanmsg.range_min = std::atof(driver_->getParametersCached().at("radial_range_min").c_str());

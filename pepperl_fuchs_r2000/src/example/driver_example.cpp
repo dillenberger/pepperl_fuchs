@@ -1,5 +1,5 @@
-// Copyright (c) 2014, Pepperl+Fuchs GmbH, Mannheim
-// Copyright (c) 2014, Denis Dillenberger
+// Copyright (c) 2014-2017, Pepperl+Fuchs GmbH, Mannheim
+// Copyright (c) 2014-2017, Denis Dillenberger
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
@@ -36,10 +36,10 @@
 int main(int argc, char **argv)
 {
     std::cout << "Hello world!" << std::endl;
-    std::string scanner_ip("192.168.1.71");
+    std::string scanner_ip("192.168.16.10");
     pepperl_fuchs::R2000Driver driver;
 
-    for( int i=0; i<2; i++ )
+    for( int i=0; i<1; i++ )
     {
         std::cout << "Connecting to scanner at " << scanner_ip << " ... ";
         if (driver.connect(scanner_ip, 80))
@@ -51,8 +51,14 @@ int main(int argc, char **argv)
             return 1;
         }
 
-        driver.setScanFrequency(35);
-        driver.setSamplesPerScan(3600);
+        driver.setScanFrequency(40);
+        driver.setSamplesPerScan(1440);
+
+        //! Display a custom bitmap on the HMI display of the scanner
+        //std::string bitmap = "<fill with some special base64url content>";
+        //driver.setParameter("hmi_application_bitmap", bitmap);
+        //driver.setParameter("hmi_display_mode","application_bitmap");
+
         auto params = driver.getParameters();
         std::cout << "Current scanner settings:" << std::endl;
         std::cout << "============================================================" << std::endl;
@@ -64,7 +70,7 @@ int main(int argc, char **argv)
         // Start capturing scanner data
         //-------------------------------------------------------------------------
         std::cout << "Starting capturing: ";
-        if (driver.startCapturingUDP())
+        if (driver.startCapturingUDP(-1800000, 0))
             std::cout << "OK" << std::endl;
         else
         {
@@ -81,8 +87,9 @@ int main(int argc, char **argv)
             {
                 auto scandata = driver.getScan();
                 scans_captured++;
+                std::cout << "\tScan " << i << ": " << scandata.distance_data.size() << " points" << std::endl;
             }
-            std::cout << "Received " << scans_captured << " from scanner" << std::endl;
+            std::cout << "Received " << scans_captured << " scans from scanner" << std::endl;
         }
 
         std::cout << "Trying to stop capture" << std::endl;

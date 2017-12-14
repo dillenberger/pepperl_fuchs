@@ -1,5 +1,5 @@
-// Copyright (c) 2014, Pepperl+Fuchs GmbH, Mannheim
-// Copyright (c) 2014, Denis Dillenberger
+// Copyright (c) 2014-2017, Pepperl+Fuchs GmbH, Mannheim
+// Copyright (c) 2014-2017, Denis Dillenberger
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification,
@@ -78,6 +78,22 @@ private:
 
     //! samples_per_scan parameter
     int samples_per_scan_;
+
+    //! Start angle of scan in 1/10000°, defaults to -1800000
+    int start_angle_;
+
+    //! Limits the maximum number of scan points per revolution in the output.
+    //! Allows the selection of  a certain sector for output in combination with the start_angle parameter.
+    int max_num_points_scan_;
+
+    //! HMI application bitmap
+    std::string hmi_application_bitmap_;
+
+    //! HMI display mode
+    std::string hmi_display_mode_;
+
+    //! latency offset on the timestamp
+    double latency_offset_;
 
     //! Pointer to driver
     R2000Driver* driver_;

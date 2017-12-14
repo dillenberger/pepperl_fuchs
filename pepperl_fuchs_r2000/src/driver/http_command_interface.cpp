@@ -1,5 +1,5 @@
-// Copyright (c) 2014, Pepperl+Fuchs GmbH, Mannheim
-// Copyright (c) 2014, Denis Dillenberger
+// Copyright (c) 2014-2017, Pepperl+Fuchs GmbH, Mannheim
+// Copyright (c) 2014-2017, Denis Dillenberger
 // All rights reserved.
 //
 // Use, modification, and distribution is subject to the
@@ -275,12 +275,13 @@ std::vector< std::string > HttpCommandInterface::getParameterList()
 }
 
 //-----------------------------------------------------------------------------
-boost::optional<HandleInfo> HttpCommandInterface::requestHandleTCP(int start_angle)
+boost::optional<HandleInfo> HttpCommandInterface::requestHandleTCP(int start_angle, unsigned int max_num_points_scan)
 {
     // Prepare HTTP request
     std::map< std::string, std::string > params;
     params["packet_type"] = "C";
     params["start_angle"] = std::to_string(start_angle);
+    params["max_num_points_scan"] = std::to_string(max_num_points_scan);
 
     // Request handle via HTTP/JSON request/response
     if( !sendHttpCommand("request_handle_tcp", params) || !checkErrorCode() )
@@ -300,13 +301,14 @@ boost::optional<HandleInfo> HttpCommandInterface::requestHandleTCP(int start_ang
     hi.port = *port;
     hi.packet_type = 'C';
     hi.start_angle = start_angle;
+    hi.max_num_points_scan = max_num_points_scan;
     hi.watchdog_enabled = true;
     hi.watchdog_timeout = 60000;
     return hi;
 }
 
 //-----------------------------------------------------------------------------
-boost::optional<HandleInfo> HttpCommandInterface::requestHandleUDP(int port, std::string hostname, int start_angle)
+boost::optional<HandleInfo> HttpCommandInterface::requestHandleUDP(int port, int start_angle, unsigned int max_num_points_scan, std::string hostname)
 {
     // Prepare HTTP request
     if( hostname == "" )
@@ -316,6 +318,7 @@ boost::optional<HandleInfo> HttpCommandInterface::requestHandleUDP(int port, std
     params["start_angle"] = std::to_string(start_angle);
     params["port"] = std::to_string(port);
     params["address"] = hostname;
+    params["max_num_points_scan"] = std::to_string(max_num_points_scan);
 
     // Request handle via HTTP/JSON request/response
     if( !sendHttpCommand("request_handle_udp", params) || !checkErrorCode() )
@@ -334,6 +337,7 @@ boost::optional<HandleInfo> HttpCommandInterface::requestHandleUDP(int port, std
     hi.port = port;
     hi.packet_type = 'C';
     hi.start_angle = start_angle;
+    hi.max_num_points_scan = max_num_points_scan;
     hi.watchdog_enabled = true;
     hi.watchdog_timeout = 60000;
     return hi;
