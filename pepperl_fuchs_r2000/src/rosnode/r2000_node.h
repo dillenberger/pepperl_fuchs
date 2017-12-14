@@ -92,6 +92,9 @@ private:
     //! HMI display mode
     std::string hmi_display_mode_;
 
+    //! latency offset on the timestamp
+    double latency_offset_;
+
     //! Pointer to driver
     R2000Driver* driver_;
 };
