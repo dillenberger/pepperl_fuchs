@@ -122,9 +122,9 @@ void R2000Node::getScanData(const ros::TimerEvent &e)
     scanmsg.header.frame_id = frame_id_;
     scanmsg.header.stamp = ros::Time::now();
 
-    scanmsg.angle_min = -M_PI;
-    scanmsg.angle_max = +M_PI;
     scanmsg.angle_increment = 2*M_PI/float(scandata.distance_data.size());
+    scanmsg.angle_min = -M_PI;
+    scanmsg.angle_max = +M_PI-scanmsg.angle_increment;
     scanmsg.time_increment = 1/35.0f/float(scandata.distance_data.size());
 
     scanmsg.scan_time = 1/std::atof(driver_->getParametersCached().at("scan_frequency").c_str());
