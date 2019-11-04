@@ -227,6 +227,53 @@ const std::map< std::string, std::string >& R2000Driver::getParameters()
 }
 
 //-----------------------------------------------------------------------------
+bool R2000Driver::setIQGlobalEnable(bool enabled)
+{
+    return command_interface_->setIQParameter("iq_global_enable", enabled ? "on" : "off");
+}
+
+//-----------------------------------------------------------------------------
+bool R2000Driver::setIQMode(uint8_t iq_port, std::string mode)
+{
+    std::stringstream ss;
+    ss << "iq"<<(int16_t)iq_port<<"_mode";
+    return command_interface_->setIQParameter(ss.str(), mode);
+}
+
+//-----------------------------------------------------------------------------
+bool R2000Driver::setIQPolarity(uint8_t iq_port, std::string polarity)
+{
+    std::stringstream ss;
+    ss << "iq"<<(int16_t)iq_port<<"_polarity";
+    return command_interface_->setIQParameter(ss.str(), polarity);
+}
+
+//-----------------------------------------------------------------------------
+bool R2000Driver::setIQOffDelay(uint8_t iq_port, unsigned int off_delay)
+{
+    std::stringstream ss;
+    ss << "iq"<<(int16_t)iq_port<<"_off_delay";
+    return command_interface_->setIQParameter(ss.str(), std::to_string(off_delay));
+}
+
+//-----------------------------------------------------------------------------
+bool R2000Driver::setIQSource(uint8_t iq_port, std::string source)
+{
+    std::stringstream ss;
+    ss << "iq"<<(int16_t)iq_port<<"_source";
+    return command_interface_->setIQParameter(ss.str(), source);
+}
+
+//-----------------------------------------------------------------------------
+bool R2000Driver::setIQTimesyncInterval(unsigned int interval)
+{
+    if (interval % 1000 != 0){
+        std::cerr << "WARNING: Cannot set iq_timesync_interval to " << interval << "(ms). value must be a multiple of 1000 (ms)" << std::endl;
+    }
+    return command_interface_->setIQParameter("iq_timesync_interval", std::to_string(interval));
+}
+
+//-----------------------------------------------------------------------------
 bool R2000Driver::setScanFrequency(unsigned int frequency)
 {
     if( !command_interface_ )

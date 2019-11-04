@@ -122,6 +122,41 @@ public:
     //! @returns True on success, False otherwise
     bool setSamplesPerScan( unsigned int samples );
 
+    //! Enable I/Q operations on device
+    //! @param enabled I/Q global enable switch for all channels. true = on. false = off
+    //! @returns True on success, False otherwise
+    bool setIQGlobalEnable(bool enabled);
+
+    //! Set the IQ mode of the given port
+    //! @param port 1 or 2
+    //! @param mode I/Q channel operation mode. Options are: disabled, input_high_z, output_push_pull, output_n_switching, output_p_switching
+    //! @returns True on success, False otherwise
+    bool setIQMode(uint8_t iq_port, std::string mode);
+
+    //! Set the IQ polarity of the given port
+    //! @param port 1 or 2
+    //! @param polarity I/Q channel polarity. Options are: active_high, active_low
+    //! @returns True on success, False otherwise
+    bool setIQPolarity(uint8_t iq_port, std::string polarity);
+
+    //! Set the IQ off delay param of the given port
+    //! @param port 1 or 2
+    //! @param off_delay I/Q channel pulse extension (ms)
+    //! @returns True on success, False otherwise
+    bool setIQOffDelay(uint8_t iq_port, unsigned int off_delay);
+
+    //! Set the IQ source of the given port
+    //! @param port 1 or 2 (timesync is only on port 2)
+    //! @param source Options are: iq_output, timesync
+    //! @returns True on success, False otherwise
+    bool setIQSource(uint8_t iq_port, std::string source);
+
+    //! Set the IQ timesync interval
+    //! @param port 1 or 2 (timesync is only on port 2)
+    //! @param interval Interval for generating a timesync pulse (ms). Intervals MUST be defined in increments of 1000ms. Default = 4000
+    //! @returns True on success, False otherwise
+    bool setIQTimesyncInterval(unsigned int interval);
+
     //! Reboot Laserscanner (Takes ~60s)
     //! @returns True if command was successfully received, False otherwise
     bool rebootDevice();

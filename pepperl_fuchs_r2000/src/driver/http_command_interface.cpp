@@ -169,6 +169,12 @@ bool HttpCommandInterface::setParameter(const std::string name, const std::strin
 }
 
 //-----------------------------------------------------------------------------
+bool HttpCommandInterface::setIQParameter(const std::string name, const std::string value)
+{
+    return sendHttpCommand("set_iq_parameter",name,value) && checkErrorCode();
+}
+
+//-----------------------------------------------------------------------------
 boost::optional< std::string > HttpCommandInterface::getParameter(const std::string name)
 {
     if( !sendHttpCommand("get_parameter","list",name) || ! checkErrorCode()  )
