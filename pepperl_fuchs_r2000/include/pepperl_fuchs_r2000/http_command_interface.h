@@ -36,6 +36,12 @@ public:
     //! @returns True on success, false otherwise
     bool setParameter(const std::string name, const std::string value);
 
+    //! Set iq (io) parameter
+    //! @param name Name
+    //! @param value Value
+    //! @returns True on success, false otherwise
+    bool setIQParameter(const std::string name, const std::string value);
+
     //! Get sensor parameter
     //! @param name Parameter name
     //! @returns Optional string value with value of given parameter name
