@@ -236,7 +236,7 @@ bool R2000Driver::setIQGlobalEnable(bool enabled)
 bool R2000Driver::setIQMode(uint8_t iq_port, std::string mode)
 {
     std::stringstream ss;
-    ss << "iq"<<iq_port<<"_mode";
+    ss << "iq"<<(int16_t)iq_port<<"_mode";
     return command_interface_->setIQParameter(ss.str(), mode);
 }
 
@@ -244,7 +244,7 @@ bool R2000Driver::setIQMode(uint8_t iq_port, std::string mode)
 bool R2000Driver::setIQPolarity(uint8_t iq_port, std::string polarity)
 {
     std::stringstream ss;
-    ss << "iq"<<iq_port<<"_polarity";
+    ss << "iq"<<(int16_t)iq_port<<"_polarity";
     return command_interface_->setIQParameter(ss.str(), polarity);
 }
 
@@ -252,7 +252,7 @@ bool R2000Driver::setIQPolarity(uint8_t iq_port, std::string polarity)
 bool R2000Driver::setIQOffDelay(uint8_t iq_port, unsigned int off_delay)
 {
     std::stringstream ss;
-    ss << "iq"<<iq_port<<"_off_delay";
+    ss << "iq"<<(int16_t)iq_port<<"_off_delay";
     return command_interface_->setIQParameter(ss.str(), std::to_string(off_delay));
 }
 
@@ -260,7 +260,7 @@ bool R2000Driver::setIQOffDelay(uint8_t iq_port, unsigned int off_delay)
 bool R2000Driver::setIQSource(uint8_t iq_port, std::string source)
 {
     std::stringstream ss;
-    ss << "iq"<<iq_port<<"_source";
+    ss << "iq"<<(int16_t)iq_port<<"_source";
     return command_interface_->setIQParameter(ss.str(), source);
 }
 
