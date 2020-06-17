@@ -66,11 +66,11 @@ public:
 
     //! Start capturing laserdata: Requests a handle and begin retrieving data from the scanner
     //! @returns True in case of success, False otherwise
-    bool startCapturingTCP();
+    bool startCapturingTCP(int start_angle=-1800000, int max_points=0);
 
     //! Start capturing laserdata: Requests a handle and begin retrieving data from the scanner
     //! @returns True in case of success, False otherwise
-    bool startCapturingUDP();
+    bool startCapturingUDP(int start_angle=-1800000, int max_points=0);
 
     //! Stop capturing laserdata: Release handle and stop retrieving data from the scanner
     //! @returns True in case of success, False otherwise
