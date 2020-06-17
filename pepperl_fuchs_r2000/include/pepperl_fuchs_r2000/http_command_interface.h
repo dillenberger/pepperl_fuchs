@@ -56,15 +56,17 @@ public:
 
     //! Request TCP handle
     //! @param start_angle Set start angle for scans in the range [0,3600000] (1/10000°)
+    //! @param max_points Set maximum points per scan (receive partial scans to reduce data rate)
     //! @returns A valid HandleInfo on success, an empty boost::optional<HandleInfo> container otherwise
-    boost::optional<HandleInfo> requestHandleTCP(int start_angle=-1800000);
+    boost::optional<HandleInfo> requestHandleTCP(int start_angle=-1800000, int max_points=0);
 
     //! Request UDP handle
     //! @param port Set UDP port where scanner data should be sent to
     //! @param hostname Optional: Set hostname/IP where scanner data should be sent to, local IP is determined automatically if not specified
     //! @param start_angle Optional: Set start angle for scans in the range [0,3600000] (1/10000°), defaults to -1800000
+    //! @param max_points Optional: Set maximum points per scan (receive partial scans to reduce data rate)
     //! @returns A valid HandleInfo on success, an empty boost::optional<HandleInfo> container otherwise
-    boost::optional<HandleInfo> requestHandleUDP(int port, std::string hostname = std::string(""), int start_angle=-1800000);
+    boost::optional<HandleInfo> requestHandleUDP(int port, std::string hostname = std::string(""), int start_angle=-1800000, int max_points=0);
 
     //! Release handle
     bool releaseHandle( const std::string& handle );

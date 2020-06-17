@@ -275,12 +275,14 @@ std::vector< std::string > HttpCommandInterface::getParameterList()
 }
 
 //-----------------------------------------------------------------------------
-boost::optional<HandleInfo> HttpCommandInterface::requestHandleTCP(int start_angle)
+boost::optional<HandleInfo> HttpCommandInterface::requestHandleTCP(int start_angle, int max_points)
 {
     // Prepare HTTP request
     std::map< std::string, std::string > params;
     params["packet_type"] = "C";
     params["start_angle"] = std::to_string(start_angle);
+    if( max_points > 0 )
+        params["max_num_points_scan"] = std::to_string(max_points);
 
     // Request handle via HTTP/JSON request/response
     if( !sendHttpCommand("request_handle_tcp", params) || !checkErrorCode() )
@@ -306,7 +308,7 @@ boost::optional<HandleInfo> HttpCommandInterface::requestHandleTCP(int start_ang
 }
 
 //-----------------------------------------------------------------------------
-boost::optional<HandleInfo> HttpCommandInterface::requestHandleUDP(int port, std::string hostname, int start_angle)
+boost::optional<HandleInfo> HttpCommandInterface::requestHandleUDP(int port, std::string hostname, int start_angle, int max_points)
 {
     // Prepare HTTP request
     if( hostname == "" )
@@ -316,6 +318,8 @@ boost::optional<HandleInfo> HttpCommandInterface::requestHandleUDP(int port, std
     params["start_angle"] = std::to_string(start_angle);
     params["port"] = std::to_string(port);
     params["address"] = hostname;
+    if( max_points > 0 )
+        params["max_num_points_scan"] = std::to_string(max_points);
 
     // Request handle via HTTP/JSON request/response
     if( !sendHttpCommand("request_handle_udp", params) || !checkErrorCode() )

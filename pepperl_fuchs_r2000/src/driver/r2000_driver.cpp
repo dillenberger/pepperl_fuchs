@@ -75,12 +75,12 @@ R2000Driver::~R2000Driver()
 }
 
 //-----------------------------------------------------------------------------
-bool R2000Driver::startCapturingTCP()
+bool R2000Driver::startCapturingTCP(int start_angle, int max_points)
 {
     if( !checkConnection() )
         return false;
 
-    handle_info_ = command_interface_->requestHandleTCP();
+    handle_info_ = command_interface_->requestHandleTCP(start_angle, max_points);
     if( !handle_info_ )
         return false;
 
@@ -94,7 +94,7 @@ bool R2000Driver::startCapturingTCP()
 }
 
 //-----------------------------------------------------------------------------
-bool R2000Driver::startCapturingUDP()
+bool R2000Driver::startCapturingUDP(int start_angle, int max_points)
 {
     if( !checkConnection() )
         return false;
@@ -104,7 +104,7 @@ bool R2000Driver::startCapturingUDP()
         return false;
     int udp_port = data_receiver_->getUDPPort();
 
-    handle_info_ = command_interface_->requestHandleUDP(udp_port);
+    handle_info_ = command_interface_->requestHandleUDP(udp_port, "", start_angle, max_points);
     if( !handle_info_ || !command_interface_->startScanOutput((*handle_info_).handle) )
         return false;
 
