@@ -68,12 +68,12 @@ bool R2000Node::connect()
     // Connecting to laser range finder
     //-------------------------------------------------------------------------
     driver_ = new R2000Driver();
-    std::cout << "Connecting to scanner at " << scanner_ip_ << " ... ";
+    ROS_INFO("Connecting to scanner at %s ...", scanner_ip_);
     if( driver_->connect(scanner_ip_,80) )
-        std::cout << "OK" << std::endl;
+        ROS_INFO("OK");
     else
     {
-        std::cout << "FAILED!" << std::endl;
+       ROS_ERROR("FAILED!");
         std::cerr << "Connection to scanner at " << scanner_ip_ << " failed!" << std::endl;
         return false;
     }
@@ -83,20 +83,20 @@ bool R2000Node::connect()
     driver_->setScanFrequency(scan_frequency_);
     driver_->setSamplesPerScan(samples_per_scan_);
     auto params = driver_->getParameters();
-    std::cout << "Current scanner settings:" << std::endl;
-    std::cout << "============================================================" << std::endl;
+    ROS_DEBUG("Current scanner settings:");
+    ROS_DEBUG("============================================================");
     for( const auto& p : params )
-        std::cout << p.first << " : " << p.second << std::endl;
-    std::cout << "============================================================" << std::endl;
+        ROS_DEBUG("%s: %s", p.first, p.second);
+    ROS_DEBUG("============================================================");
 
     // Start capturing scanner data
     //-------------------------------------------------------------------------
-    std::cout << "Starting capturing: ";
+    ROS_INFO("Starting capturing: ");
     if( driver_->startCapturingTCP() )
-        std::cout << "OK" << std::endl;
+        ROS_INFO("OK");
     else
     {
-        std::cout << "FAILED!" << std::endl;
+        ROS_ERROR("FAILED!");
         return false;
     }
     return true;
@@ -107,10 +107,10 @@ void R2000Node::getScanData(const ros::TimerEvent &e)
 {
     if( !driver_->isCapturing() )
     {
-        std::cout << "ERROR: Laser range finder disconnected. Trying to reconnect..." << std::endl;
+        ROS_ERROR("ERROR: Laser range finder disconnected. Trying to reconnect...");
         while( !connect() )
         {
-            std::cout << "ERROR: Reconnect failed. Trying again in 2 seconds..." << std::endl;
+            ROS_ERROR("ERROR: Reconnect failed. Trying again in 2 seconds...");
             usleep((2*1000000));
         }
     }
