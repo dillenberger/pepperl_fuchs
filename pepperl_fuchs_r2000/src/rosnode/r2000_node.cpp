@@ -68,7 +68,7 @@ bool R2000Node::connect()
     // Connecting to laser range finder
     //-------------------------------------------------------------------------
     driver_ = new R2000Driver();
-    ROS_INFO("Connecting to scanner at %s ...", scanner_ip_);
+    ROS_INFO("Connecting to scanner at %s ...", scanner_ip_.c_str());
     if( driver_->connect(scanner_ip_,80) )
         ROS_INFO("OK");
     else
@@ -86,7 +86,7 @@ bool R2000Node::connect()
     ROS_DEBUG("Current scanner settings:");
     ROS_DEBUG("============================================================");
     for( const auto& p : params )
-        ROS_DEBUG("%s: %s", p.first, p.second);
+        ROS_DEBUG("%s: %s", p.first.c_str(), p.second.c_str());
     ROS_DEBUG("============================================================");
 
     // Start capturing scanner data
